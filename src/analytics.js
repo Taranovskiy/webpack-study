@@ -2,6 +2,9 @@ function createAnalytics() {
   let counter = 0;
   let isDestroyed = false;
 
+  console.log('--->>', 'test');
+  
+
   const listener = () => counter += 1;
 
   document.addEventListener('click', listener);
