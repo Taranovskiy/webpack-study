@@ -5,9 +5,10 @@ body {
   font-family: Roboto, sans-serif;
 }
 
-pre {
+.code {
   max-width: 500px;
   margin: 0 auto;
+  color: blue;
 }
 
 .container {
