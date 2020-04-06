@@ -1,6 +1,8 @@
 import * as $ from 'jquery';
 import Post from '@models/Post';
 import '@/styles/styles';
+import '@/styles/less.less';
+import '@/styles/scss.scss';
 import WebpackLogo from '@/assets/webpack-logo.png';
 import json from '@/assets/json';
 import xml from '@/assets/data.xml';

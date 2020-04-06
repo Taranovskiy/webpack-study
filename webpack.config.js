@@ -24,6 +24,26 @@ const optimization = () => {
   return config;
 };
 
+const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
+
+const cssLoaders = extra => {
+  const loaders = [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        hmr: isDev,
+        reloadAll: true,
+      },
+    },
+    'css-loader',
+    'less-loader',
+  ];
+  if (extra) {
+    loaders.push(extra);
+  }
+  return loaders;
+}
+
 module.exports = {
   mode: 'development',
   context: path.resolve(__dirname, 'src'),
@@ -32,7 +52,7 @@ module.exports = {
     analytics: './analytics.js',
   },
   output: {
-    filename: '[name].[contenthash].js',
+    filename: filename('js'),
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
@@ -62,23 +82,22 @@ module.exports = {
       }
     ]),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: filename('css'),
     })
   ],
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-              reloadAll: true,
-            },
-          },
-          'css-loader',
-        ],
+        use: cssLoaders(),
+      },
+      {
+        test: /\.less$/,
+        use: cssLoaders('less-loader')
+      },
+      {
+        test: /\.s[ac]ss$/,
+        use: cssLoaders('sass-loader'),
       },
       {
         test: /\.(png|jpg|svg|gif)$/,
