@@ -44,6 +44,24 @@ const cssLoaders = extra => {
   return loaders;
 }
 
+const jsLoaders = () => {
+  const loaders = [{
+    loader: 'babel-loader',
+    options: {
+      presets: [
+        '@babel/preset-env',
+      ],
+      plugins: [
+        '@babel/plugin-proposal-class-properties',
+      ],
+    },
+  }];
+  if (isDev) {
+    loaders.push('eslint-loader');
+  }
+  return loaders;
+}
+
 module.exports = {
   mode: 'development',
   context: path.resolve(__dirname, 'src'),
@@ -67,6 +85,7 @@ module.exports = {
     port: 4200,
     hot: isDev,
   },
+  devtool: isDev ? 'source-map' : '',
   plugins: [
     new HTMLWebpackPlugin({
       template: './index.html',
@@ -90,17 +109,7 @@ module.exports = {
       { 
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-env',
-            ],
-            plugins: [
-              '@babel/plugin-proposal-class-properties',
-            ],
-          },
-        },
+        use: jsLoaders(),
       },
       {
         test: /\.css$/,
